@@ -1,4 +1,10 @@
-﻿using System;
+﻿/* Name: Enrique Tejeda
+ * Date: 11/21/2020
+ * Filename: BankAccountTests
+ * Description: File incorporates tests for Class1.cs and will fail if exceptions aren't thrown.
+ */
+
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BankAccountNS;
 

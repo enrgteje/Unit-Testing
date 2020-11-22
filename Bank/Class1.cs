@@ -1,11 +1,14 @@
-﻿using System;
+﻿/* Name: Enrique Tejeda
+ * Date: 11/21/2020
+ * Filename: Class1.cs
+ * Description: Bank functions are implemented here and will throw an exception if the conditions are met.
+ */
+
+using System;
 
 namespace BankAccountNS
 {
-    /// <summary>  
-    /// Bank Account demo class.  
-    /// </summary>  
-    public class BankAccount
+        public class BankAccount
     {
         private string m_customerName;
 
