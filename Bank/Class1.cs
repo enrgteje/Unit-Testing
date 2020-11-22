@@ -17,6 +17,8 @@ namespace BankAccountNS
 
         public const string DebitAmountLessThanZeroMessage = "Debit amount less than zero";
 
+        public const string CreditAmountLessThanZeroMessage = "Credit amount less than zero";
+
         private BankAccount()
         {
         }
@@ -67,7 +69,7 @@ namespace BankAccountNS
 
             if (amount < 0)
             {
-                throw new ArgumentOutOfRangeException("amount");
+                throw new ArgumentOutOfRangeException("amount", amount, CreditAmountLessThanZeroMessage);
             }
 
             m_balance += amount;

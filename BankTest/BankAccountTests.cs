@@ -7,10 +7,6 @@ namespace BankTest
     [TestClass]
     public class BankAccountTests
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-        }
 
         // unit test code  
         [TestMethod]
@@ -32,31 +28,33 @@ namespace BankTest
 
         //unit test method  
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Debit_WhenAmountIsLessThanZero_ShouldThrowArgumentOutOfRange()
         {
             // arrange  
             double beginningBalance = 11.99;
-            double debitAmount = -100.00;
+            double debitAmount = -1;
             BankAccount account = new BankAccount("Mr. Bryan Walton", beginningBalance);
 
-            // act  
-            account.Debit(debitAmount);
-
-            // assert is handled by ExpectedException  
+            try
+            {
+                account.Debit(debitAmount);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                // assert
+                StringAssert.Contains(e.Message, BankAccount.DebitAmountLessThanZeroMessage);
+                return;
+            }
+            Assert.Fail("No exception was thrown.");
         }
 
         [TestMethod]
-        //[ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void Debit_WhenAmountIsMoreThanBalance_ShouldThrowArgumentOutOfRange()
         {
             // arrange  
             double beginningBalance = 11.99;
-            double debitAmount = 20;
+            double debitAmount = 200;
             BankAccount account = new BankAccount("Mr. Bryan Walton", beginningBalance);
-
-            // act  
-            account.Debit(debitAmount);
 
             try
             {
@@ -66,7 +64,60 @@ namespace BankTest
             {
                 // assert
                 StringAssert.Contains(e.Message, BankAccount.DebitAmountExceedsBalanceMessage);
+                return;
             }
+            Assert.Fail("No exception was thrown.");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void Credit_WhenAccountIsFrozen()
+        {
+            double beginningBalance = 11.99;
+            double creditAmount = 200;
+            BankAccount account = new BankAccount("Mr. Bryan Walton", beginningBalance);
+
+            account.ToggleFreeze();
+
+            account.Credit(creditAmount);
+        }
+
+        [TestMethod]
+        public void Credit_WhenAmountIsLessThanZero_ShouldThrowArgumentOutOfRange()
+        {
+            // arrange  
+            double beginningBalance = 11.99;
+            double creditAmount = -1;
+            BankAccount account = new BankAccount("Mr. Bryan Walton", beginningBalance);
+
+            try
+            {
+                account.Credit(creditAmount);
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                // assert
+                StringAssert.Contains(e.Message, BankAccount.CreditAmountLessThanZeroMessage);
+                return;
+            }
+            Assert.Fail("No exception was thrown.");
+        }
+
+        [TestMethod]
+        public void Credit_WithValidAmount_UpdatesBalance()
+        {
+            // arrange  
+            double beginningBalance = 11.99;
+            double creditAmount = 4.55;
+            double expected = 16.54;
+            BankAccount account = new BankAccount("Mr. Bryan Walton", beginningBalance);
+
+            // act  
+            account.Credit(creditAmount);
+
+            // assert  
+            double actual = account.Balance;
+            Assert.AreEqual(expected, actual, 0.001, "Account not credited correctly");
         }
     }
 }
